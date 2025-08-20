@@ -6,7 +6,19 @@ pub struct FakeIDProvider {
     id: String,
 }
 
+pub struct NanoIDProvider;
+
+impl IDProvider for NanoIDProvider {
+    fn provide(&self) -> String {
+        nanoid::nanoid!(7)
+    }
+}
 impl FakeIDProvider {
+    
+    pub fn set_id(&mut self, id: String) {
+        self.id = id;
+    }
+    
     pub fn new(id: String) -> Self {
         Self { id}
     }
