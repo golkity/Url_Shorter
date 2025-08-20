@@ -65,5 +65,18 @@ mod tests {
 
         assert_ne!(result, result2);
     }
-
+    
+    #[tokio::test]
+    async fn after_save_store_should_have_one_item() {
+        let idp = crate::id_provider::NanoIDProvider;
+        let store = Arc::new(DashMap::new());
+        let repo = InMemoryRepository::new(store.clone());
+        let command = CreateShortUrl::new(idp, repo);
+        
+        let result = command.execute("https://www.google.com".to_owned())
+            .await
+            .unwrap();
+        
+        assert_eq!(store.len(),1);
+    }
 }
